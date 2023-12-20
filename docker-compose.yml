@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  database:
+    image: mysql:5.7
+    container_name: fincontrol__db
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: fincontrol__db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: secret
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql:/var/lib/mysql
+    networks:
+      - fincontrol
+      
+  redis:
+    image: redis:alpine
+    container_name: fincontrol__redis
+    ports:
+      - "6379:6379"
+    networks:
+      - fincontrol
+
+volumes:
+  mysql:
+
+
+networks:
+  fincontrol:
+    driver: bridge

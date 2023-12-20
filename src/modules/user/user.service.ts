@@ -1,10 +1,15 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { HashService, PrismaService } from '@shared/services';
-import { CreateUserDto, GetUserDto, UpdateUserDto } from './dto';
+import { CreateUserDto, GetUserDto } from './dto';
+import { QueuesKeyEnum } from '@shared/enums';
+import { Queue } from 'bull';
+import { InjectQueue } from '@nestjs/bull';
 
 @Injectable()
 export class UserService {
   constructor(
+    @InjectQueue(QueuesKeyEnum.USER)
+    private readonly userQueue: Queue,
     private readonly prismaservice: PrismaService,
     private readonly hashService: HashService,
   ) {}
@@ -24,6 +29,14 @@ export class UserService {
         name,
         password: await this.hashService.hash(password),
       },
+    });
+
+    await this.userQueue.add(QueuesKeyEnum.CREATED_USER, {
+      id,
+      email,
+      name,
+      createdAt,
+      updatedAt,
     });
 
     return {
