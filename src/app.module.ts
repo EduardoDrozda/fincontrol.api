@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UserModule } from './modules/user/user.module';
+import { UserModule } from '@domain/user';
+
 import { GlobalModule } from '@shared/modules';
 
 @Module({

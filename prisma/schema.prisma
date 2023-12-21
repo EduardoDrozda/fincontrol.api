@@ -11,12 +11,13 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  email     String   @unique
-  name      String
-  password  String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+  id                  String                @id @default(uuid())
+  email               String                @unique
+  name                String
+  password            String
+  createdAt           DateTime              @default(now()) @map("created_at")
+  updatedAt           DateTime              @updatedAt @map("updated_at")
+  UserEmailValidation UserEmailValidation[]
 
   @@map("users")
 }
@@ -24,6 +25,7 @@ model User {
 model UserEmailValidation {
   id     String @id @default(uuid())
   userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   token  String
 
   validatedAt DateTime? @map("validated_at")

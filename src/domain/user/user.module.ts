@@ -4,6 +4,7 @@ import { UserController } from './user.controller';
 import { BullModule } from '@nestjs/bull';
 import { QueuesKeyEnum } from '@shared/enums';
 import { UserProcessor } from './user.processor';
+import { MailModule } from '@shared/modules';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { UserProcessor } from './user.processor';
         attempts: Number.MAX_SAFE_INTEGER,
       },
     }),
+    MailModule,
   ],
   controllers: [UserController],
   providers: [UserService, UserProcessor],
