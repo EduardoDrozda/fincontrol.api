@@ -14,4 +14,7 @@ export const envVarsSchema = Joi.object({
   MAIL_PORT: Joi.number().required(),
   MAIL_USERNAME: Joi.string().required(),
   MAIL_PASSWORD: Joi.string().required(),
+
+  JWT_SECRET: Joi.string().required(),
+  JWT_EXPIRES_IN: Joi.string().required(),
 });

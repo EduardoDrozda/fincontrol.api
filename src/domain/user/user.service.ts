@@ -42,13 +42,17 @@ export class UserService {
   }
 
   private async verifyIfUserEmailAlreadyExists(email: string): Promise<void> {
-    const findeduser = await this.prismaservice.user.findUnique({
-      where: { email },
-    });
+    const findeduser = await this.findByEmail(email);
 
     if (findeduser) {
       throw new BadRequestException('Email already exists');
     }
+  }
+
+  async findByEmail(email: string) {
+    return await this.prismaservice.user.findUnique({
+      where: { email },
+    });
   }
 
   private async createUser(data: Prisma.UserCreateInput): Promise<GetUserDto> {

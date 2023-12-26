@@ -5,6 +5,7 @@ import { BullModule } from '@nestjs/bull';
 import { QueuesKeyEnum } from '@shared/enums';
 import { UserProcessor } from './user.processor';
 import { MailModule } from '@shared/modules';
+import { HashService, PrismaService } from '@shared/services';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { MailModule } from '@shared/modules';
     MailModule,
   ],
   controllers: [UserController],
-  providers: [UserService, UserProcessor],
+  providers: [UserService, UserProcessor, PrismaService, HashService],
+  exports: [UserService],
 })
 export class UserModule {}
