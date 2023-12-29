@@ -12,7 +12,7 @@ import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: '.env',
+      envFilePath: process.env.NODE_ENV === 'testing' ? '.env.testing' : '.env',
       isGlobal: true,
       validationSchema: envVarsSchema,
     }),
