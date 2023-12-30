@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { HashService } from '@shared/services';
 import { JwtService } from '@nestjs/jwt';
 import { JWT_SERVICE_MOCK, USER_SERVICE_MOCK } from '@shared/mocks/services';
 import { UserService } from '@domain/user';
 import { MOCK_USER } from '@shared/mocks';
+import { HashModule } from '@shared/modules';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -13,8 +13,8 @@ describe('AuthService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [HashModule],
       providers: [
-        HashService,
         AuthService,
         {
           provide: JwtService,

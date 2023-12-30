@@ -1,11 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { HashService, PrismaService } from '@shared/services';
+
 import { UserService } from '@domain/user';
 import { BullModule } from '@nestjs/bull';
 import { USER_SERVICE_MOCK } from '@shared/mocks/services';
 import { JwtService } from '@nestjs/jwt';
+import { HashModule } from '@shared/modules/hash';
+import { PrismaModule } from '@shared/modules';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -13,11 +15,9 @@ describe('AuthController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [BullModule],
+      imports: [BullModule, HashModule, PrismaModule],
       providers: [
-        HashService,
         AuthService,
-        PrismaService,
         JwtService,
         {
           provide: UserService,

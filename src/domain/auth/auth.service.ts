@@ -1,8 +1,8 @@
 import { UserService } from '@domain/user';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { HashService } from '@shared/services';
 import { CredentialDTO, GetCredentialDTO } from './dtos';
 import { JwtService } from '@nestjs/jwt';
+import { HashService } from '@shared/modules';
 
 @Injectable()
 export class AuthService {

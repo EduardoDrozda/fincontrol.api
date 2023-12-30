@@ -3,8 +3,8 @@ import { Module } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { UserModule } from '@domain/user';
-import { HashService } from '@shared/services';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { HashModule } from '@shared/modules';
 
 @Module({
   imports: [
@@ -20,6 +20,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       inject: [ConfigService],
     }),
     UserModule,
+    HashModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, HashService],

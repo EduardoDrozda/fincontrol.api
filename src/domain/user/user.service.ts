@@ -1,10 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { HashService, PrismaService } from '@shared/services';
+
 import { CreateUserDto, GetUserDto } from './dto';
 import { QueuesKeyEnum } from '@shared/enums';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 import { Prisma } from '@prisma/client';
+import { HashService, PrismaService } from '@shared/modules';
 
 @Injectable()
 export class UserService {

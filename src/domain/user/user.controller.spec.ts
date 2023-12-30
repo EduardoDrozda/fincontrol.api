@@ -3,9 +3,9 @@ import { UserService } from './user.service';
 import { BullModule, getQueueToken } from '@nestjs/bull';
 import { QueuesKeyEnum } from '@shared/enums';
 import { MOCK_BULL_QUEUE } from '@shared/mocks/bull';
-import { HashService, PrismaService } from '@shared/services';
 import { USER_SERVICE_MOCK } from '@shared/mocks/services';
 import { UserController } from './user.controller';
+import { HashModule, PrismaModule } from '@shared/modules';
 
 describe('UserController', () => {
   let controller: UserController;
@@ -13,10 +13,8 @@ describe('UserController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [BullModule],
+      imports: [BullModule, PrismaModule, HashModule],
       providers: [
-        PrismaService,
-        HashService,
         {
           provide: UserService,
           useValue: userServiceMock,
