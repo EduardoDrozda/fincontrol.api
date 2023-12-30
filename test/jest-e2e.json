@@ -8,6 +8,8 @@
   },
   "moduleNameMapper": {
     "^@shared/(.*)$": "<rootDir>/../src/shared/$1",
-    "^@domain/(.*)$": "<rootDir>/../src/domain/$1"
-  }
+    "^@domain/(.*)$": "<rootDir>/../src/domain/$1",
+    "^@config/(.*)$": "<rootDir>/../src/config/$1"
+  },
+  "setupFilesAfterEnv": ["<rootDir>/testSetupFile.ts"]
 }

@@ -1,18 +1,17 @@
-import { Module } from '@nestjs/common';
-import { UserModule } from '@domain/user';
-
 import { AuthModule } from '@domain/auth';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from '@shared/guards';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { UserModule } from '@domain/user';
 import { BullModule } from '@nestjs/bull';
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { configureEnviroments } from '@config/configuration';
-console.log(configureEnviroments());
+import { AuthGuard } from '@shared/guards';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(configureEnviroments()),
+    ConfigModule.forRoot({
+      ignoreEnvFile: true,
+    }),
     BullModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -34,4 +33,4 @@ console.log(configureEnviroments());
     },
   ],
 })
-export class AppModule {}
+export class AppTestModule {}
