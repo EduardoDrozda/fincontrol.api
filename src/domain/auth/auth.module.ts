@@ -23,6 +23,6 @@ import { HashModule } from '@shared/modules';
     HashModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, HashService],
+  providers: [AuthService],
 })
 export class AuthModule {}
