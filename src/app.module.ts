@@ -8,7 +8,6 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BullModule } from '@nestjs/bull';
 import { JwtModule } from '@nestjs/jwt';
 import { configureEnviroments } from '@config/configuration';
-console.log(configureEnviroments());
 
 @Module({
   imports: [
