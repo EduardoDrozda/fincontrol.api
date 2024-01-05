@@ -49,16 +49,14 @@ jobs:
       - run: npm run lint
 
   test:
-    needs: build
+    name: Quality Gate
+    needs: [build]
+
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [16.x, 18.x, 20.x]
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Use build artifacts
         uses: actions/cache@v2
@@ -69,15 +67,6 @@ jobs:
       - run: npm ci
       - run: npm run test:cov
 
-  sonarcloud:
-    name: Quality Gate
-    needs: [build, test]
-
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
