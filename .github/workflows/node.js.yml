@@ -67,7 +67,7 @@ jobs:
           key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
 
       - run: npm ci
-      - run: npm run test
+      - run: npm run test:cov
 
   sonarcloud:
     name: Quality Gate
