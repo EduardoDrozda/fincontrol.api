@@ -71,8 +71,7 @@ jobs:
 
   sonarcloud:
     name: SonarCloud
-    needs: build
-    needs: test
+    needs: [build, lint, test]
 
     runs-on: ubuntu-latest
     steps:
