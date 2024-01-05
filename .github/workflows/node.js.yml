@@ -70,7 +70,7 @@ jobs:
       - run: npm run test
 
   sonarcloud:
-    name: SonarCloud
+    name: Quality Gate
     needs: [build, test]
 
     runs-on: ubuntu-latest
