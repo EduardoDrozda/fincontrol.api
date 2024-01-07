@@ -13,7 +13,8 @@
     "!**/app.ts",
     "!**/main.ts",
     "!**/config/**",
-    "!**/schemas/**"
+    "!**/schemas/**",
+    "!**/*.spec.ts"
   ],
   "moduleNameMapper": {
     "^@shared/(.*)$": "<rootDir>/shared/$1",
