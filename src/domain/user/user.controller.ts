@@ -1,6 +1,6 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Patch } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto';
+import { CreateUserDto, UserValidateDTO } from './dto';
 import { IsPublic } from '@shared/decorators';
 
 @Controller('users')
@@ -11,5 +11,11 @@ export class UserController {
   @IsPublic()
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
+  }
+
+  @Patch('/validate')
+  @IsPublic()
+  validateUser(@Body() data: UserValidateDTO) {
+    return this.userService.validateUser(data);
   }
 }

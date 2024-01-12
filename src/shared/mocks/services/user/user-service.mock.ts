@@ -4,4 +4,5 @@ export const USER_SERVICE_MOCK = {
   findByEmail: jest.fn(),
   createUser: jest.fn(),
   queueUserCreatedEvent: jest.fn(),
+  validateUser: jest.fn(),
 };

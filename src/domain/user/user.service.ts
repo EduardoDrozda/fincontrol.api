@@ -1,14 +1,19 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 
-import { CreateUserDto, GetUserDto } from './dto';
+import { CreateUserDto, GetUserDto, UserValidateDTO } from './dto';
 import { QueuesKeyEnum } from '@shared/enums';
 import { Queue } from 'bull';
 import { InjectQueue } from '@nestjs/bull';
 import { Prisma } from '@prisma/client';
 import { HashService, PrismaService } from '@shared/modules';
+import { UserEmailValidation, UserWithUserEmailValidation } from './models';
 
 @Injectable()
 export class UserService {
+  private readonly USER_EMAIL_ALREADY_EXISTS_ERROR = 'Email already exists';
+  private readonly USER_EMAIL_VALIDATION_ERROR = 'Invalid token';
+  private readonly USER_EMAIL_ALREADY_VALIDATED_ERROR =
+    'User already validated';
   constructor(
     @InjectQueue(QueuesKeyEnum.USER)
     private readonly userQueue: Queue,
@@ -46,11 +51,13 @@ export class UserService {
     const findeduser = await this.findByEmail(email);
 
     if (findeduser) {
-      throw new BadRequestException('Email already exists');
+      throw new BadRequestException(this.USER_EMAIL_ALREADY_EXISTS_ERROR);
     }
   }
 
-  async findByEmail(email: string) {
+  async findByEmail(
+    email: string,
+  ): Promise<UserWithUserEmailValidation | null> {
     return await this.prismaservice.user.findUnique({
       where: { email },
       include: {
@@ -82,5 +89,36 @@ export class UserService {
 
   private async queueUserCreatedEvent(data: GetUserDto): Promise<void> {
     await this.userQueue.add(QueuesKeyEnum.CREATED_USER, data);
+  }
+
+  async validateUser({ token }: UserValidateDTO): Promise<void> {
+    const userEmailValidation =
+      await this.prismaservice.userEmailValidation.findFirst({
+        where: { token },
+        include: {
+          user: true,
+        },
+      });
+
+    this.verifyUserEmailValidation(userEmailValidation);
+
+    await this.validateUserEmail(userEmailValidation);
+  }
+
+  private verifyUserEmailValidation(userEmailValidation: UserEmailValidation) {
+    if (!userEmailValidation) {
+      throw new BadRequestException(this.USER_EMAIL_VALIDATION_ERROR);
+    }
+
+    if (userEmailValidation.validatedAt) {
+      throw new BadRequestException(this.USER_EMAIL_ALREADY_VALIDATED_ERROR);
+    }
+  }
+
+  private async validateUserEmail(userEmailValidation: UserEmailValidation) {
+    await this.prismaservice.userEmailValidation.update({
+      where: { id: userEmailValidation.id },
+      data: { validatedAt: new Date() },
+    });
   }
 }

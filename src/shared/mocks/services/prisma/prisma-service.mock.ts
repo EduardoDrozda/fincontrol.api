@@ -5,6 +5,8 @@ export const PRISMA_SERVICE_MOCK = {
   },
   userEmailValidation: {
     create: jest.fn(),
+    update: jest.fn(),
+    findFirst: jest.fn(),
   },
   $transaction: jest
     .fn()

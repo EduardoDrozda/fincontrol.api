@@ -52,4 +52,16 @@ describe('UserController', () => {
 
     expect(spy).toHaveBeenCalledTimes(1);
   });
+
+  it('should call validateUser method', async () => {
+    const spy = jest.spyOn(userServiceMock, 'validateUser');
+
+    const data = {
+      token: 'token',
+    };
+
+    await controller.validateUser(data);
+
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
 });

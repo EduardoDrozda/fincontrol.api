@@ -105,4 +105,63 @@ describe('UserService', () => {
 
     expect(spyUser).toHaveBeenCalledTimes(1);
   });
+
+  it('should validate user', async () => {
+    const spyUser = jest
+      .spyOn(prismaServiceMock.userEmailValidation, 'findFirst')
+      .mockResolvedValue({
+        id: '1',
+        userId: '1',
+        token: 'token',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
+    const spyUserEmailValidation = jest.spyOn(
+      prismaServiceMock.userEmailValidation,
+      'update',
+    );
+
+    await service.validateUser({
+      token: 'token',
+    });
+
+    expect(spyUser).toHaveBeenCalledTimes(1);
+    expect(spyUserEmailValidation).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw error when user validation token is invalid', async () => {
+    const spyUser = jest
+      .spyOn(prismaServiceMock.userEmailValidation, 'findFirst')
+      .mockResolvedValue(null);
+
+    await expect(
+      service.validateUser({
+        token: 'token',
+      }),
+    ).rejects.toThrow('Invalid token');
+
+    expect(spyUser).toHaveBeenCalledTimes(1);
+  });
+
+  it('should throw error when user already validated', async () => {
+    const spyUser = jest
+      .spyOn(prismaServiceMock.userEmailValidation, 'findFirst')
+      .mockResolvedValue({
+        id: '1',
+        userId: '1',
+        token: 'token',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        validatedAt: new Date(),
+      });
+
+    await expect(
+      service.validateUser({
+        token: 'token',
+      }),
+    ).rejects.toThrow('User already validated');
+
+    expect(spyUser).toHaveBeenCalledTimes(1);
+  });
 });
