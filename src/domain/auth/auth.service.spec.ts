@@ -63,7 +63,25 @@ describe('AuthService', () => {
     };
 
     await expect(service.login(credential)).rejects.toThrow(
-      'E-mail or password is incorrect',
+      'E-mail ou senha inválidos',
+    );
+
+    expect(userService.findByEmail).toHaveBeenCalledWith(credential.email);
+  });
+
+  it('should throw an error when user is not validated', async () => {
+    jest.spyOn(userService, 'findByEmail').mockResolvedValue({
+      ...MOCK_USER,
+      userEmailValidation: [{ validatedAt: null }],
+    } as any);
+
+    const credential = {
+      email: MOCK_USER.email,
+      password: 'secret',
+    };
+
+    await expect(service.login(credential)).rejects.toThrow(
+      'E-mail ou senha inválidos',
     );
 
     expect(userService.findByEmail).toHaveBeenCalledWith(credential.email);

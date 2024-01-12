@@ -5,4 +5,12 @@ export const MOCK_USER = {
   password: '$2b$10$RjaRTz5dl.LNltZop1VJ/.wS1QKrf4mOJIX.OWxTrovASxKIymjpi',
   createdAt: '2023-12-28T17:50:37.230Z',
   updatedAt: '2023-12-28T17:50:37.230Z',
+  userEmailValidation: [
+    {
+      id: '8b7a2c1d-9f2a-4f7e-8d3f-5f1e3f4c4c0a',
+      validatedAt: '2023-12-28T17:50:37.230Z',
+      createdAt: '2023-12-28T17:50:37.230Z',
+      updatedAt: '2023-12-28T17:50:37.230Z',
+    },
+  ],
 };

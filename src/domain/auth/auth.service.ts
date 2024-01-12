@@ -6,6 +6,8 @@ import { HashService } from '@shared/modules';
 
 @Injectable()
 export class AuthService {
+  private readonly USER_INVALID_MESSAGE = 'E-mail ou senha inválidos';
+
   constructor(
     private readonly userService: UserService,
     private readonly hashService: HashService,
@@ -16,7 +18,13 @@ export class AuthService {
     const user = await this.userService.findByEmail(email);
 
     if (!user || !(await this.hashService.compare(password, user.password))) {
-      throw new UnauthorizedException('E-mail or password is incorrect');
+      throw new UnauthorizedException(this.USER_INVALID_MESSAGE);
+    }
+
+    const [userValidation] = user.userEmailValidation;
+
+    if (!userValidation.validatedAt) {
+      throw new UnauthorizedException(this.USER_INVALID_MESSAGE);
     }
 
     const token = this.jwtService.sign({ id: user.id, email: user.email });
